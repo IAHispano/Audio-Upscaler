@@ -25,7 +25,7 @@ from shutil import rmtree
 from setuptools import find_packages, setup
 
 # Package meta-data.
-NAME = "audiosr_package"
+NAME = "audio_upscaler"
 DESCRIPTION = "This package is written for text-to-audio/music generation."
 URL = "https://github.com/IAHispano/Audio-Upscaler"
 EMAIL = "aitronssesin@gmail.com"
