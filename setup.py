@@ -97,7 +97,7 @@ setup(
     # },
     install_requires=REQUIRED,
     packages=find_packages(),
-    package_data={"audiosr_upscaler": ["*/*.py", "*/*/*.py", "*/*/*/*.py", "*/*/*/*/*.py", "*/*.npy", "*/*/*.npy", "*/*.gz", "*/*/*.gz", "*/*.json", "*/*/*.json", "*/*/*/*.json"]},
+    package_data={"audio_upscaler": ["*/*.py", "*/*/*.py", "*/*/*/*.py", "*/*/*/*/*.py", "*/*.npy", "*/*/*.npy", "*/*.gz", "*/*/*.gz", "*/*.json", "*/*/*.json", "*/*/*/*.json"]},
     include_package_data=True,
     license="MIT",
     classifiers=[
