@@ -1,0 +1,11 @@
+*.pyc
+__pycache__
+test.py
+flagged
+output
+gradio_cached*
+*egg-info
+build*
+*.wav
+dist/
+*DS_Store*

@@ -1,0 +1,1 @@
+from .predict import start_predict
