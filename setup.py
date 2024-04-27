@@ -27,7 +27,7 @@ from setuptools import find_packages, setup
 # Package meta-data.
 NAME = "audiosr_package"
 DESCRIPTION = "This package is written for text-to-audio/music generation."
-URL = "https://github.com/aitronssesin/versatile_audio_super_resolution"
+URL = "https://github.com/IAHispano/Audio-Upscaler"
 EMAIL = "aitronssesin@gmail.com"
 AUTHOR = "Aitron Emper"
 REQUIRES_PYTHON = ">=3.7.0"
@@ -97,7 +97,7 @@ setup(
     # },
     install_requires=REQUIRED,
     packages=find_packages(),
-    package_data={"audiosr_package": ["*/*.py", "*/*/*.py", "*/*/*/*.py", "*/*/*/*/*.py", "*/*.npy", "*/*/*.npy", "*/*.gz", "*/*/*.gz", "*/*.json", "*/*/*.json", "*/*/*/*.json"]},
+    package_data={"audiosr_upscaler": ["*/*.py", "*/*/*.py", "*/*/*/*.py", "*/*/*/*/*.py", "*/*.npy", "*/*/*.npy", "*/*.gz", "*/*/*.gz", "*/*.json", "*/*/*.json", "*/*/*/*.json"]},
     include_package_data=True,
     license="MIT",
     classifiers=[
