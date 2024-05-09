@@ -41,7 +41,7 @@ class Predictor:
             output_file = os.path.join(os.path.dirname(input_file), f"{os.path.splitext(os.path.basename(input_file))[0]}" + "_output.wav")
         sf.write(output_file, data=out_wav, samplerate=sr)
 
-def upscale(input_file, output_file, sr=48000, ddim_steps=50, guidance_scale=3.5, model_name="basic", device="auto", seed=None):
+def upscale(input_file, output_file=None, sr=48000, ddim_steps=50, guidance_scale=3.5, model_name="basic", device="auto", seed=None):
     p = Predictor()
     p.setup(model_name, device)
     p.predict(
