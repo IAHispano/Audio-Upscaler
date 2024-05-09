@@ -6,7 +6,7 @@ import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
 
-from audiosr_package.latent_diffusion.modules.diffusionmodules.util import (
+from audio_upscaler.latent_diffusion.modules.diffusionmodules.util import (
     checkpoint,
     conv_nd,
     linear,
@@ -15,7 +15,7 @@ from audiosr_package.latent_diffusion.modules.diffusionmodules.util import (
     normalization,
     timestep_embedding,
 )
-from audiosr_package.latent_diffusion.modules.attention import SpatialTransformer
+from audio_upscaler.latent_diffusion.modules.attention import SpatialTransformer
 
 
 # dummy replace

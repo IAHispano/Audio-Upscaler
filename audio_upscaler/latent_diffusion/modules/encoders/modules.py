@@ -1,14 +1,14 @@
 import torch
 import logging
 import torch.nn as nn
-from audiosr_package.clap.open_clip import create_model
-from audiosr_package.clap.training.data import get_audio_features
+from audio_upscaler.clap.open_clip import create_model
+from audio_upscaler.clap.training.data import get_audio_features
 import torchaudio
 from transformers import RobertaTokenizer, AutoTokenizer, T5EncoderModel
 import torch.nn.functional as F
-from audiosr_package.latent_diffusion.modules.audiomae.AudioMAE import Vanilla_AudioMAE
-from audiosr_package.latent_diffusion.modules.phoneme_encoder.encoder import TextEncoder
-from audiosr_package.latent_diffusion.util import instantiate_from_config
+from audio_upscaler.latent_diffusion.modules.audiomae.AudioMAE import Vanilla_AudioMAE
+from audio_upscaler.latent_diffusion.modules.phoneme_encoder.encoder import TextEncoder
+from audio_upscaler.latent_diffusion.util import instantiate_from_config
 
 from transformers import AutoTokenizer, T5Config
 

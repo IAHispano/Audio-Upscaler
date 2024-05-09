@@ -5,8 +5,8 @@ import torch.nn as nn
 import numpy as np
 from einops import rearrange
 
-from audiosr_package.latent_diffusion.util import instantiate_from_config
-from audiosr_package.latent_diffusion.modules.attention import LinearAttention
+from audio_upscaler.latent_diffusion.util import instantiate_from_config
+from audio_upscaler.latent_diffusion.modules.attention import LinearAttention
 
 
 def get_timestep_embedding(timesteps, embedding_dim):

@@ -3,16 +3,16 @@ import os
 
 import torch.nn.functional as F
 import numpy as np
-from audiosr_package.latent_diffusion.modules.ema import *
+from audio_upscaler.latent_diffusion.modules.ema import *
 
-from audiosr_package.latent_diffusion.modules.diffusionmodules.model import Encoder, Decoder
-from audiosr_package.latent_diffusion.modules.distributions.distributions import (
+from audio_upscaler.latent_diffusion.modules.diffusionmodules.model import Encoder, Decoder
+from audio_upscaler.latent_diffusion.modules.distributions.distributions import (
     DiagonalGaussianDistribution,
 )
 import soundfile as sf
 
-from audiosr_package.utilities.model import get_vocoder
-from audiosr_package.utilities.tools import synth_one_sample
+from audio_upscaler.utilities.model import get_vocoder
+from audio_upscaler.utilities.tools import synth_one_sample
 
 
 class AutoencoderKL(nn.Module):
@@ -117,7 +117,7 @@ class AutoencoderKL(nn.Module):
         return dec
 
     def decode_to_waveform(self, dec):
-        from audiosr_package.utilities.model import vocoder_infer
+        from audio_upscaler.utilities.model import vocoder_infer
 
         if self.image_key == "fbank":
             dec = dec.squeeze(1).permute(0, 2, 1)

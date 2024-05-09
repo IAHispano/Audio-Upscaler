@@ -15,11 +15,11 @@ import torch
 import torch.nn as nn
 
 from timm.models.vision_transformer import Block
-from audiosr_package.latent_diffusion.modules.audiomae.util.pos_embed import (
+from audio_upscaler.latent_diffusion.modules.audiomae.util.pos_embed import (
     get_2d_sincos_pos_embed,
     get_2d_sincos_pos_embed_flexible,
 )
-from audiosr_package.latent_diffusion.modules.audiomae.util.patch_embed import (
+from audio_upscaler.latent_diffusion.modules.audiomae.util.patch_embed import (
     PatchEmbed_new,
     PatchEmbed_org,
 )

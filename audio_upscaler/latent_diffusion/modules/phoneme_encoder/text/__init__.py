@@ -1,6 +1,6 @@
 """ from https://github.com/keithito/tacotron """
-from audiosr_package.latent_diffusion.modules.phoneme_encoder.text import cleaners
-from audiosr_package.latent_diffusion.modules.phoneme_encoder.text.symbols import symbols
+from audio_upscaler.latent_diffusion.modules.phoneme_encoder.text import cleaners
+from audio_upscaler.latent_diffusion.modules.phoneme_encoder.text.symbols import symbols
 
 
 # Mappings from symbol to numeric ID and vice versa:

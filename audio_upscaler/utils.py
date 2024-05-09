@@ -16,7 +16,7 @@ import wave
 import torchaudio
 import progressbar
 from librosa.filters import mel as librosa_mel_fn
-from audiosr_package.lowpass import lowpass
+from audio_upscaler.lowpass import lowpass
 
 hann_window = {}
 mel_basis = {}
@@ -191,7 +191,7 @@ def read_wav_file(filename):
     duration = waveform.size(-1) / sr
 
     if(duration > 10.24):
-        print("\033[93m {}\033[00m" .format("Warning: audio is longer than 10.24 seconds, may degrade the model performance. It's recommand to truncate your audio to 5.12 seconds before input to audiosr_package to get the best performance."))
+        print("\033[93m {}\033[00m" .format("Warning: audio is longer than 10.24 seconds, may degrade the model performance. It's recommand to truncate your audio to 5.12 seconds before input to audio_upscaler to get the best performance."))
 
     if(duration % 5.12 != 0):
         pad_duration = duration + (5.12 - duration % 5.12)
@@ -310,7 +310,7 @@ def save_wave(waveform, inputpath, savepath, name="outwav", samplerate=16000):
 
         save_path = os.path.join(savepath, fname)
         temp_path = os.path.join(tempfile.gettempdir(), fname)
-        print("\033[98m {}\033[00m" .format("Don't forget to try different seeds by setting --seed <int> so that audiosr_package can have optimal performance on your hardware."))
+        print("\033[98m {}\033[00m" .format("Don't forget to try different seeds by setting --seed <int> so that audio_upscaler can have optimal performance on your hardware."))
         print("Save audio to %s." % save_path)
         sf.write(temp_path, waveform[i, 0], samplerate=samplerate)
         strip_silence(inputpath, temp_path, save_path)
@@ -404,11 +404,11 @@ def get_basic_config():
         },
         "augmentation": {"mixup": 0.5},
         "model": {
-            "target": "audiosr_package.latent_diffusion.models.ddpm.LatentDiffusion",
+            "target": "audio_upscaler.latent_diffusion.models.ddpm.LatentDiffusion",
             "params": {
                 "first_stage_config": {
                     "base_learning_rate": 0.000008,
-                    "target": "audiosr_package.latent_encoder.autoencoder.AutoencoderKL",
+                    "target": "audio_upscaler.latent_encoder.autoencoder.AutoencoderKL",
                     "params": {
                         "reload_from_ckpt": "/mnt/bn/lqhaoheliu/project/audio_generation_diffusion/log/vae/vae_48k_256/ds_8_kl_1/checkpoints/ckpt-checkpoint-484999.ckpt",
                         "sampling_rate": 48000,
@@ -454,7 +454,7 @@ def get_basic_config():
                 "monitor": "val/loss_simple_ema",
                 "scale_by_std": True,
                 "unet_config": {
-                    "target": "audiosr_package.latent_diffusion.modules.diffusionmodules.openaimodel.UNetModel",
+                    "target": "audio_upscaler.latent_diffusion.modules.diffusionmodules.openaimodel.UNetModel",
                     "params": {
                         "image_size": 64,
                         "in_channels": 32,
@@ -478,11 +478,11 @@ def get_basic_config():
                     "concat_lowpass_cond": {
                         "cond_stage_key": "lowpass_mel",
                         "conditioning_key": "concat",
-                        "target": "audiosr_package.latent_diffusion.modules.encoders.modules.VAEFeatureExtract",
+                        "target": "audio_upscaler.latent_diffusion.modules.encoders.modules.VAEFeatureExtract",
                         "params": {
                             "first_stage_config": {
                                 "base_learning_rate": 0.000008,
-                                "target": "audiosr_package.latent_encoder.autoencoder.AutoencoderKL",
+                                "target": "audio_upscaler.latent_encoder.autoencoder.AutoencoderKL",
                                 "params": {
                                     "sampling_rate": 48000,
                                     "batchsize": 4,

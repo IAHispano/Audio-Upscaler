@@ -2,8 +2,8 @@ import math
 import torch
 from torch import nn
 
-import audiosr_package.latent_diffusion.modules.phoneme_encoder.commons as commons
-import audiosr_package.latent_diffusion.modules.phoneme_encoder.attentions as attentions
+import audio_upscaler.latent_diffusion.modules.phoneme_encoder.commons as commons
+import audio_upscaler.latent_diffusion.modules.phoneme_encoder.attentions as attentions
 
 
 class TextEncoder(nn.Module):

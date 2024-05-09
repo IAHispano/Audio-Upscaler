@@ -1,8 +1,8 @@
 import os
 import pandas as pd
 
-import audiosr_package.utilities.audio as Audio
-from audiosr_package.utilities.tools import load_json
+import audio_upscaler.utilities.audio as Audio
+from audio_upscaler.utilities.tools import load_json
 
 import random
 from torch.utils.data import Dataset

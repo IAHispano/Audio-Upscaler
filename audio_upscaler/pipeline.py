@@ -6,10 +6,10 @@ import torch
 import torchaudio
 import numpy as np
 
-import audiosr_package.latent_diffusion.modules.phoneme_encoder.text as text
-from audiosr_package.latent_diffusion.models.ddpm import LatentDiffusion
-from audiosr_package.latent_diffusion.util import get_vits_phoneme_ids_no_padding
-from audiosr_package.utils import (
+import audio_upscaler.latent_diffusion.modules.phoneme_encoder.text as text
+from audio_upscaler.latent_diffusion.models.ddpm import LatentDiffusion
+from audio_upscaler.latent_diffusion.util import get_vits_phoneme_ids_no_padding
+from audio_upscaler.utils import (
     default_audioldm_config,
     download_checkpoint,
     read_audio_file,
@@ -120,7 +120,7 @@ def build_model(ckpt_path=None, config=None, device=None, model_name="basic"):
         else:
             device = torch.device("cpu")
 
-    print("Loading audiosr_package: %s" % model_name)
+    print("Loading audio_upscaler: %s" % model_name)
     print("Loading model on %s" % device)
 
     ckpt_path = download_checkpoint(model_name)
