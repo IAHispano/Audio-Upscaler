@@ -385,9 +385,11 @@ def download_checkpoint(checkpoint_name="basic"):
     else:
         raise ValueError("Invalid Model Name %s" % checkpoint_name)
     
-    model_url = f"https://huggingface.co/{model_id}/resolve/main/pytorch_model.bin"
-    checkpoint_path = wget.download(model_url)
-    print("Downloaded checkpoint to %s" % checkpoint_path)
+    checkpoint_path = os.path.join(os.getcwd(), "pytorch_model.bin")
+    if not os.path.exists(checkpoint_path):
+        model_url = f"https://huggingface.co/{model_id}/resolve/main/pytorch_model.bin"
+        checkpoint_path = wget.download(model_url)
+        print("Downloaded checkpoint to %s" % checkpoint_path)
     return checkpoint_path
 
 
