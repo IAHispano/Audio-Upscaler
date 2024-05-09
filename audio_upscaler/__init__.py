@@ -1,1 +1,1 @@
-from .predict import start_predict
+from .predict import upscale
