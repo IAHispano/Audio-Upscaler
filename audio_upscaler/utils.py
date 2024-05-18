@@ -190,9 +190,6 @@ def read_wav_file(filename):
     waveform, sr = torchaudio.load(filename)
     duration = waveform.size(-1) / sr
 
-    if(duration > 10.24):
-        print("\033[93m {}\033[00m" .format("Warning: audio is longer than 10.24 seconds, may degrade the model performance. It's recommand to truncate your audio to 5.12 seconds before input to audio_upscaler to get the best performance."))
-
     if(duration % 5.12 != 0):
         pad_duration = duration + (5.12 - duration % 5.12)
     else:
@@ -217,6 +214,9 @@ def read_audio_file(filename):
     log_mel_spec, stft = wav_feature_extraction(waveform, target_frame)
     return log_mel_spec, stft, waveform, duration, target_frame
 
+def read_audio_file_duration(filename):
+    waveform, target_frame, duration = read_wav_file(filename)
+    return duration
 
 def read_list(fname):
     result = []

@@ -31,7 +31,7 @@ URL = "https://github.com/IAHispano/Audio-Upscaler"
 EMAIL = "aitronssesin@gmail.com"
 AUTHOR = "Aitron Emper"
 REQUIRES_PYTHON = ">=3.7.0"
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 
 # What packages are required for this module to be executed?
 REQUIRED = [
