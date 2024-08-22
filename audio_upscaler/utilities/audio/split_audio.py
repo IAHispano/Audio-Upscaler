@@ -5,6 +5,7 @@ import re
 import os
 import unicodedata
 
+
 def format_title(title):
     formatted_title = (
         unicodedata.normalize("NFKD", title).encode("ascii", "ignore").decode("utf-8")
@@ -20,15 +21,7 @@ def process_audio(file_path):
         # load audio file
         song = AudioSegment.from_file(file_path)
 
-        # set silence threshold and duration
-        silence_thresh = -70  # dB
-        min_silence_len = 750  # ms, adjust as needed
-
-        # detect nonsilent parts
-        nonsilent_parts = detect_nonsilent(
-            song, min_silence_len=min_silence_len, silence_thresh=silence_thresh
-        )
-
+        max_duration = 10.24 * 1000  # ms
         # Create a new directory to store chunks
         file_dir = os.path.dirname(file_path)
         file_name = os.path.basename(file_path).split(".")[0]
@@ -41,25 +34,20 @@ def process_audio(file_path):
         if os.path.isfile(timestamps_file):
             os.remove(timestamps_file)
 
-        # Maximum duration for each chunk (10 seconds)
-        max_duration = 5 * 1000  # ms
-
-        # export chunks and save start times
         segment_count = 0
-        for i, (start_i, end_i) in enumerate(nonsilent_parts):
-            while start_i < end_i:
-                # Calculate the end of the current chunk
-                chunk_end = min(start_i + max_duration, end_i)
-                chunk = song[start_i:chunk_end]
-                chunk_file_path = os.path.join(new_dir_path, f"chunk{segment_count}.wav")
-                chunk.export(chunk_file_path, format="wav")
-                print(f"Segment {segment_count} created!")
-                segment_count += 1
-                # write start times to file
-                with open(timestamps_file, "a", encoding="utf-8") as f:
-                    f.write(f"{chunk_file_path} starts at {start_i} ms\n")
-                # Move to the next chunk
-                start_i = chunk_end
+        start_i = 0
+        while start_i < len(song):
+            chunk_end = min(start_i + max_duration, len(song))
+            chunk = song[start_i:chunk_end]
+            chunk = chunk.set_channels(1)
+            chunk_file_path = os.path.join(new_dir_path, f"chunk{segment_count}.wav")
+            chunk.export(chunk_file_path, format="wav")
+            print(f"Segment {segment_count} created!")
+            segment_count += 1
+            with open(timestamps_file, "a", encoding="utf-8") as f:
+                f.write(f"{chunk_file_path} starts at {start_i} ms\n")
+            start_i = chunk_end
+
         print(f"Total segments created: {segment_count}")
         print(f"Split all chunks for {file_path} successfully!")
         return "Finish", new_dir_path

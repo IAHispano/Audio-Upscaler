@@ -5,12 +5,15 @@ import numpy as np
 import soundfile as sf
 import torch
 import shutil
+import librosa
 
 from .pipeline import build_model, super_resolution
 from .utils import read_audio_file_duration
 from .utilities.audio.split_audio import process_audio, merge_audio
 
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 torch.set_float32_matmul_precision("high")
+
 
 class Predictor:
     def setup(self, model_name="basic", device="auto"):
@@ -18,18 +21,30 @@ class Predictor:
         self.device = device
         self.audiosr = build_model(model_name=self.model_name, device=self.device)
 
-    def predict(self,
+    def convert_to_mono(self, input_file):
+        y, sr = librosa.load(input_file, sr=None, mono=False)
+        if y.ndim > 1:
+            y = librosa.to_mono(y)
+            mono_file = os.path.splitext(input_file)[0] + "_mono.wav"
+            sf.write(mono_file, y, sr)
+            return mono_file
+        return input_file
+
+    def predict(
+        self,
         input_file="example/music.wav",
         output_file=None,
         sr=48000,
         ddim_steps=50,
         guidance_scale=3.5,
-        seed=None
+        seed=None,
     ):
         """Run a single prediction on the model"""
         if seed is None:
             seed = random.randint(0, 2**32 - 1)
             print(f"Setting seed to: {seed}")
+
+        input_file = self.convert_to_mono(input_file)
         if read_audio_file_duration(input_file) > 5:
             result, new_dir_path = process_audio(input_file)
             if result == "Error":
@@ -52,7 +67,7 @@ class Predictor:
                         seed=seed,
                         guidance_scale=guidance_scale,
                         ddim_steps=ddim_steps,
-                        latent_t_per_second=12.8
+                        latent_t_per_second=12.8,
                     )
                     out_wav = (waveform[0] * 32767).astype(np.int16).T
                     sf.write(path, data=out_wav, samplerate=sr)
@@ -67,7 +82,11 @@ class Predictor:
             tgt_sr, audio_opt = merge_audio(merge_timestamps_file)
             os.remove(merge_timestamps_file)
             if not output_file:
-                output_file = os.path.join(os.path.dirname(input_file), f"{os.path.splitext(os.path.basename(input_file))[0]}" + "_output.wav")
+                output_file = os.path.join(
+                    os.path.dirname(input_file),
+                    f"{os.path.splitext(os.path.basename(input_file))[0]}"
+                    + "_output.wav",
+                )
             sf.write(output_file, audio_opt, tgt_sr, format="WAV")
             shutil.rmtree(new_dir_path)
         else:
@@ -77,14 +96,28 @@ class Predictor:
                 seed=seed,
                 guidance_scale=guidance_scale,
                 ddim_steps=ddim_steps,
-                latent_t_per_second=12.8
+                latent_t_per_second=12.8,
             )
             out_wav = (waveform[0] * 32767).astype(np.int16).T
             if not output_file:
-                output_file = os.path.join(os.path.dirname(input_file), f"{os.path.splitext(os.path.basename(input_file))[0]}" + "_output.wav")
+                output_file = os.path.join(
+                    os.path.dirname(input_file),
+                    f"{os.path.splitext(os.path.basename(input_file))[0]}"
+                    + "_output.wav",
+                )
             sf.write(output_file, data=out_wav, samplerate=sr)
 
-def upscale(input_file, output_file=None, sr=48000, ddim_steps=50, guidance_scale=3.5, model_name="basic", device="auto", seed=None):
+
+def upscale(
+    input_file,
+    output_file=None,
+    sr=48000,
+    ddim_steps=50,
+    guidance_scale=3.5,
+    model_name="basic",
+    device="auto",
+    seed=None,
+):
     p = Predictor()
     p.setup(model_name, device)
     p.predict(
@@ -93,5 +126,5 @@ def upscale(input_file, output_file=None, sr=48000, ddim_steps=50, guidance_scal
         sr=sr,
         ddim_steps=ddim_steps,
         guidance_scale=guidance_scale,
-        seed=seed
+        seed=seed,
     )
