@@ -75,10 +75,10 @@ def lowpass_filtering_prepare_inference(dl_output):
     cutoff_freq = (
         _locate_cutoff_freq(dl_output["stft"], percentile=0.985) / 1024
     ) * 24000
-    
+
     # If the audio is almost empty. Give up processing
-    if(cutoff_freq < 1000):
-        cutoff_freq = 24000
+    if cutoff_freq < 1000:
+        cutoff_freq = 23999
 
     order = 8
     ftype = np.random.choice(["butter", "cheby1", "ellip", "bessel"])
@@ -114,7 +114,13 @@ def mel_spectrogram_train(y):
     mel_fmax = 24000
 
     if 24000 not in mel_basis:
-        mel = librosa_mel_fn(sr=sampling_rate, n_fft=filter_length, n_mels=n_mel, fmin=mel_fmin, fmax=mel_fmax)
+        mel = librosa_mel_fn(
+            sr=sampling_rate,
+            n_fft=filter_length,
+            n_mels=n_mel,
+            fmin=mel_fmin,
+            fmax=mel_fmax,
+        )
         mel_basis[str(mel_fmax) + "_" + str(y.device)] = (
             torch.from_numpy(mel).float().to(y.device)
         )
@@ -186,11 +192,12 @@ def normalize_wav(waveform):
     waveform = waveform / (np.max(np.abs(waveform)) + 1e-8)
     return waveform * 0.5
 
+
 def read_wav_file(filename):
     waveform, sr = torchaudio.load(filename)
     duration = waveform.size(-1) / sr
 
-    if(duration % 5.12 != 0):
+    if duration % 5.12 != 0:
         pad_duration = duration + (5.12 - duration % 5.12)
     else:
         pad_duration = duration
@@ -209,14 +216,17 @@ def read_wav_file(filename):
     waveform = pad_wav(waveform, target_length=int(48000 * pad_duration))
     return waveform, target_frame, pad_duration
 
+
 def read_audio_file(filename):
     waveform, target_frame, duration = read_wav_file(filename)
     log_mel_spec, stft = wav_feature_extraction(waveform, target_frame)
     return log_mel_spec, stft, waveform, duration, target_frame
 
+
 def read_audio_file_duration(filename):
     waveform, target_frame, duration = read_wav_file(filename)
     return duration
+
 
 def read_list(fname):
     result = []
@@ -259,31 +269,43 @@ def seed_everything(seed):
     torch.backends.cudnn.benchmark = True
 
 
-
 def strip_silence(orignal_path, input_path, output_path):
-    get_dur = subprocess.run([
-        'ffprobe',
-        '-v', 'error',
-        '-select_streams', 'a:0',
-        '-show_entries', 'format=duration',
-        '-sexagesimal',
-        '-of', 'json',
-        orignal_path
-    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    get_dur = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-select_streams",
+            "a:0",
+            "-show_entries",
+            "format=duration",
+            "-sexagesimal",
+            "-of",
+            "json",
+            orignal_path,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
 
-    duration = json.loads(get_dur.stdout)['format']['duration']
-    
-    subprocess.run([
-        'ffmpeg',
-        '-y',
-        '-ss', '00:00:00',
-        '-i', input_path,
-        '-t', duration,
-        '-c', 'copy',
-        output_path
-    ])
+    duration = json.loads(get_dur.stdout)["format"]["duration"]
+
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-ss",
+            "00:00:00",
+            "-i",
+            input_path,
+            "-t",
+            duration,
+            "-c",
+            "copy",
+            output_path,
+        ]
+    )
     os.remove(input_path)
-
 
 
 def save_wave(waveform, inputpath, savepath, name="outwav", samplerate=16000):
@@ -293,9 +315,11 @@ def save_wave(waveform, inputpath, savepath, name="outwav", samplerate=16000):
     for i in range(waveform.shape[0]):
         if waveform.shape[0] > 1:
             fname = "%s_%s.wav" % (
-                os.path.basename(name[i])
-                if (not ".wav" in name[i])
-                else os.path.basename(name[i]).split(".")[0],
+                (
+                    os.path.basename(name[i])
+                    if (not ".wav" in name[i])
+                    else os.path.basename(name[i]).split(".")[0]
+                ),
                 i,
             )
         else:
@@ -310,7 +334,11 @@ def save_wave(waveform, inputpath, savepath, name="outwav", samplerate=16000):
 
         save_path = os.path.join(savepath, fname)
         temp_path = os.path.join(tempfile.gettempdir(), fname)
-        print("\033[98m {}\033[00m" .format("Don't forget to try different seeds by setting --seed <int> so that audio_upscaler can have optimal performance on your hardware."))
+        print(
+            "\033[98m {}\033[00m".format(
+                "Don't forget to try different seeds by setting --seed <int> so that audio_upscaler can have optimal performance on your hardware."
+            )
+        )
         print("Save audio to %s." % save_path)
         sf.write(temp_path, waveform[i, 0], samplerate=samplerate)
         strip_silence(inputpath, temp_path, save_path)
@@ -384,7 +412,7 @@ def download_checkpoint(checkpoint_name="basic"):
         model_id = "haoheliu/audiosr_speech"
     else:
         raise ValueError("Invalid Model Name %s" % checkpoint_name)
-    
+
     checkpoint_path = os.path.join(os.getcwd(), "pytorch_model.bin")
     if not os.path.exists(checkpoint_path):
         model_url = f"https://huggingface.co/{model_id}/resolve/main/pytorch_model.bin"
