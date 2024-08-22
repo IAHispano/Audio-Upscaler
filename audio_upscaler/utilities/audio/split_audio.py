@@ -1,4 +1,3 @@
-from pydub.silence import detect_nonsilent
 from pydub import AudioSegment
 import numpy as np
 import re
