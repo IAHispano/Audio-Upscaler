@@ -1,39 +1,17 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-# python3 setup.py sdist bdist_wheel
-"""
-@File    :   setup.py.py    
-@Contact :   aitronssesin@gmail.com
-@License :   (C)Copyright 2020-2100
-
-@Modify Time      @Author    @Version    @Desciption
-------------      -------    --------    -----------
-9/6/21 5:16 PM   Haohe Liu      1.0         None
-"""
-
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# Note: To use the 'upload' functionality of this file, you must:
-#   $ pipenv install twine --dev
-
 import io
 import os
-import sys
-from shutil import rmtree
 
 from setuptools import find_packages, setup
 
 # Package meta-data.
-NAME = "audio_upscaler"
-DESCRIPTION = "This package is written for text-to-audio/music generation."
+NAME = "audio-upscaler"
+DESCRIPTION = " Versatile AI-driven audio upscaler to enhance the quality of any audio."
 URL = "https://github.com/IAHispano/Audio-Upscaler"
-EMAIL = "aitronssesin@gmail.com"
-AUTHOR = "Aitron Emper"
+EMAIL = "blaise@applio.org"
+AUTHOR = "Pascal Aznar"
 REQUIRES_PYTHON = ">=3.7.0"
-VERSION = "0.1.4"
+VERSION = "0.0.1"
 
-# What packages are required for this module to be executed?
 REQUIRED = [
     "torch>=1.13.0",
     "torchaudio>=0.13.0",
@@ -97,7 +75,21 @@ setup(
     # },
     install_requires=REQUIRED,
     packages=find_packages(),
-    package_data={"audio_upscaler": ["*/*.py", "*/*/*.py", "*/*/*/*.py", "*/*/*/*/*.py", "*/*.npy", "*/*/*.npy", "*/*.gz", "*/*/*.gz", "*/*.json", "*/*/*.json", "*/*/*/*.json"]},
+    package_data={
+        "audio_upscaler": [
+            "*/*.py",
+            "*/*/*.py",
+            "*/*/*/*.py",
+            "*/*/*/*/*.py",
+            "*/*.npy",
+            "*/*/*.npy",
+            "*/*.gz",
+            "*/*/*.gz",
+            "*/*.json",
+            "*/*/*.json",
+            "*/*/*/*.json",
+        ]
+    },
     include_package_data=True,
     license="MIT",
     classifiers=[
