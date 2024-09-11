@@ -4,8 +4,8 @@ import os
 from setuptools import find_packages, setup
 
 # Package meta-data.
-NAME = "audio-upscaler"
-DESCRIPTION = " Versatile AI-driven audio upscaler to enhance the quality of any audio."
+NAME = "versatile-audio-upscaler"
+DESCRIPTION = "Versatile AI-driven audio upscaler to enhance the quality of any audio."
 URL = "https://github.com/IAHispano/Audio-Upscaler"
 EMAIL = "blaise@applio.org"
 AUTHOR = "Pascal Aznar"
