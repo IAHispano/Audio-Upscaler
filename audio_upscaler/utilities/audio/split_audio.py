@@ -73,10 +73,10 @@ def merge_audio(timestamps_file):
 
         for line in lines:
             # Extract filename and start time from line
-            match = re.search(r"(chunk\d+.wav) starts at (\d+) ms", line)
+            match = re.search(r"(chunk\d+.wav) starts at (\d+(\.\d+)?) ms", line)
             if match:
-                filename, start_time = match.groups()
-                start_time = int(start_time)
+                filename, start_time = match.groups()[:2]
+                start_time = float(start_time)
 
                 # Construct the complete path to the chunk file
                 chunk_file = os.path.join(timestamps_dir, prefix, filename)
