@@ -10,7 +10,7 @@ URL = "https://github.com/IAHispano/Audio-Upscaler"
 EMAIL = "blaise@applio.org"
 AUTHOR = "Pascal Aznar"
 REQUIRES_PYTHON = ">=3.7.0"
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 REQUIRED = [
     "torch>=1.13.0",
